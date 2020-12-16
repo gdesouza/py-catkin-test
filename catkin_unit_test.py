@@ -136,13 +136,20 @@ class Package:
     def hasTest(self):
         """Search CMakeLists.txt to determine if there are tests defined"""
 
+        self.has_test = False
         cmake_file = os.path.join(self.path, 'CMakeLists.txt')
         with open(cmake_file, 'r') as file:
-            lines = file.read()
+            lines = file.read().split()
 
-        self.has_test = 'catkin_add_gtest' in lines
-        self.has_test |= 'add_rostest_gtest' in lines
-        return self.has_test
+        for line in lines:
+            line = line.strip()
+            if line.startswith('#'): 
+                line = ''
+            if 'catkin_add_gtest' in line or 'add_rostest_gtest' in line:
+                self.has_test = True
+                break        
+
+        return self.has_test 
 
 
     def run_lcov_cmd(self, params):
@@ -211,7 +218,7 @@ class Package:
         self.setExecutionStatus(process.returncode)
 
         if process.returncode != 0:
-            return 0
+            return process.returncode
 
         # Capture coverage data after running tests
         self.run_lcov_cmd('--rc lcov_branch_coverage=' + self.use_branch_coverage + ' --no-checksum --directory build/' + self.name + ' --capture --output-file build/lcov.info')
@@ -223,7 +230,10 @@ class Package:
         out, err = self.run_lcov_cmd('--rc lcov_branch_coverage=' + self.use_branch_coverage + ' --remove build/lcov.total /usr* /opt* */test/* */CMakeFiles/* */build/* --output-file build/lcov.total.cleaned')
         
         # Extract line coverage from output
-        self.coverage = float(out.split('lines......: ')[1].split('%')[0])
+        if 'lines......:' in out:
+            self.coverage = float(out.split('lines......: ')[1].split('%')[0])
+        else:
+            self.coverage = 0
 
         return 0
 
