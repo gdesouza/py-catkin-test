@@ -204,7 +204,7 @@ class Package:
 
         # Run tests with coverage flags
         extra_parms = '--no-deps --cmake-args -DCMAKE_CXX_FLAGS="-g -O0 -Wall -fprofile-arcs -ftest-coverage" -DCMAKE_EXE_LINKER_FLAGS="-fprofile-arcs -ftest-coverage"'
-        cmd = ['catkin', 'run_tests', self.name, '-j1']
+        cmd = ['catkin', 'run_tests', self.name]
         cmd.extend(shlex.split(extra_parms))
 
         process = subprocess.Popen(cmd,
@@ -251,7 +251,7 @@ class Package:
             return 0
         
         extra_parms = '--no-deps --make-args -s -- --catkin-make-args run_tests --make-args tests'.split(' ')
-        cmd = ['catkin', 'build', self.name, '-j1']
+        cmd = ['catkin', 'build', self.name]
         cmd.extend(extra_parms)
 
         process = subprocess.Popen(cmd,
