@@ -360,6 +360,11 @@ def run_test(package):
         ret = package.run_test()
     if package.has_test:
         print_table_row(package)
+
+    if ret != 0:
+        print("Test returned a non-zero code (" + ret + ")")
+        print(package.err)
+
     return ret
 
 
