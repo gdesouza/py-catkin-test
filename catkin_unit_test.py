@@ -347,6 +347,7 @@ def print_table_row(package):
     )
 
     print(row) 
+
     if args.output:
         with open(args.output, 'a') as f:
             f.write(row + '\n')
@@ -360,12 +361,12 @@ def run_test(package):
         ret = package.run_test()
     if package.has_test:
         print_table_row(package)
-
-    if ret != 0:
-        print("Test returned a non-zero code (" + str(ret) + ")")
-        print(package.err)
-
+        if ret != 0 or package.summary.failures.strip() != '0':
+            print('Test failures:')
+            print(package.err)
     return ret
+
+
 
 
 def main(args):
