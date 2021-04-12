@@ -38,10 +38,10 @@ class TestSummary:
 
         except:
             print('Test summary error: bad format')
-            total = 0
-            errors = 0
-            failures = 0
-            skipped = 0
+            total = -1
+            errors = -1
+            failures = -1
+            skipped = -1
 
         finally:
             return cls(total, errors, failures, skipped)
