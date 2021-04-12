@@ -362,7 +362,7 @@ def run_test(package):
         print_table_row(package)
 
     if ret != 0:
-        print("Test returned a non-zero code (" + ret + ")")
+        print("Test returned a non-zero code (" + str(ret) + ")")
         print(package.err)
 
     return ret
