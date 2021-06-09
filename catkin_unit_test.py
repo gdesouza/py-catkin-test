@@ -145,7 +145,7 @@ class Package:
             line = line.strip()
             if line.startswith('#'): 
                 line = ''
-            if 'catkin_add_gtest' in line or 'add_rostest_gtest' in line:
+            if 'catkin_add_gtest' in line or 'add_rostest_gtest' in line or 'catkin_add_nosetests' in line:
                 self.has_test = True
                 break        
 
