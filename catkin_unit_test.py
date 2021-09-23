@@ -145,7 +145,8 @@ class Package:
             line = line.strip()
             if line.startswith('#'): 
                 line = ''
-            if 'catkin_add_gtest' in line or 'add_rostest_gtest' in line or 'catkin_add_nosetests' in line:
+            test_keywords = ['catkin_add_gtest', 'add_rostest_gtest', 'catkin_add_nosetests', 'add_rostest']
+            if any([keyword in line for keyword in test_keywords]):
                 self.has_test = True
                 break        
 
